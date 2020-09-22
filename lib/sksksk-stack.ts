@@ -1,5 +1,6 @@
 import ec2 = require('@aws-cdk/aws-ec2');
 import ecs = require('@aws-cdk/aws-ecs');
+import sns = require('@aws-cdk/aws-sns');
 import path = require('path');
 import * as cdk from '@aws-cdk/core';
 
@@ -49,5 +50,7 @@ export class SkskskStack extends cdk.Stack {
       cluster,
       taskDefinition: taskDef
     });
+
+    const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
   }
 }
