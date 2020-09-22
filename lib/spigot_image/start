@@ -1,0 +1,6 @@
+#!/bin/sh
+
+SPIGOT_VERSION=$1
+
+cd /srv/spigot/
+exec java -Xmx1024M -XX:ParallelGCThreads=2 -server -Xincgc -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:+AggressiveOpts -XX:+CMSParallelRemarkEnabled -XX:+DisableExplicitGC -XX:MaxGCPauseMillis=500 -XX:SurvivorRatio=16 -XX:TargetSurvivorRatio=90 -XX:+UseAdaptiveGCBoundary -XX:-UseGCOverheadLimit -Xnoclassgc -XX:UseSSE=3 -XX:MaxPermSize=128M -XX:PermSize=124m -XX:LargePageSizeInBytes=4m -jar /srv/spigot/spigot-${SPIGOT_VERSION}.jar nogui 2>&1
