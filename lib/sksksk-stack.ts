@@ -30,11 +30,12 @@ export class SkskskStack extends cdk.Stack {
       service: ec2.GatewayVpcEndpointAwsService.S3,
     })
 
-    const cluster = new ecs.Cluster(this, 'SkskskCluster', { vpc });
-
     const logging = new ecs.AwsLogDriver({
       streamPrefix: "sksksk",
     })
+
+    /*
+    const cluster = new ecs.Cluster(this, 'SkskskCluster', { vpc });
 
     const taskDef = new ecs.FargateTaskDefinition(this, "SkskskTaskDefinition", {
       memoryLimitMiB: 4096,
@@ -50,6 +51,7 @@ export class SkskskStack extends cdk.Stack {
       cluster,
       taskDefinition: taskDef
     });
+    */
 
     const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
   }
