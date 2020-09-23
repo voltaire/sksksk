@@ -22,16 +22,19 @@ export class SkskskStack extends cdk.Stack {
     new ec2.InterfaceVpcEndpoint(this, 'CloudwatchLogsVpcEndpoint', {
       vpc: vpc,
       service: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,
+      securityGroups: [sg],
     })
 
     new ec2.InterfaceVpcEndpoint(this, 'ECRVpcEndpoint', {
       vpc: vpc,
       service: ec2.InterfaceVpcEndpointAwsService.ECR,
+      securityGroups: [sg],
     })
 
     new ec2.InterfaceVpcEndpoint(this, 'ECRDockerVpcEndpoint', {
       vpc: vpc,
       service: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER,
+      securityGroups: [sg],
     })
 
     new ec2.GatewayVpcEndpoint(this, 'S3VpcEndpoint', {
@@ -54,13 +57,6 @@ export class SkskskStack extends cdk.Stack {
       image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, 'spigot_image')),
       logging,
     })
-
-    /*
-    new ecs.FargateService(this, "SkskskService", {
-      cluster,
-      taskDefinition: taskDef
-    });
-    */
 
     const sepAccount = new iam.AccountPrincipal('006851364659')
 
