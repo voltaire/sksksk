@@ -3,16 +3,15 @@ EXPOSE 25565
 
 RUN apk add --update-cache git
 
-ADD start /service/spigot/run
-RUN chmod +x /service/spigot/run
+ADD start /srv/mc/run
+RUN chmod +x /srv/mc/run
 
-ADD https://dynmap.us/releases/Dynmap-3.1-beta-3a-spigot.jar /srv/spigot/plugins/dynmap.jar
+ADD https://dynmap.us/builds/dynmap/Dynmap-3.1-beta4-spigot.jar /srv/mc/plugins/dynmap.jar
 
 # install spigot
-ADD https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar /srv/spigot/BuildTools.jar
+ADD https://papermc.io/api/v1/paper/1.16.3/204/download /srv/mc/paper.jar
 
-WORKDIR /srv/spigot/
-RUN java -Xmx1024M -jar /srv/spigot/BuildTools.jar --rev 1.16.3
-RUN echo "eula=true" > /srv/spigot/eula.txt
+RUN echo "eula=true" > /srv/mc/eula.txt
 
-CMD ["/service/spigot/run", "1.16.3"]
+WORKDIR /srv/mc/
+CMD ["/srv/mc/run"]
