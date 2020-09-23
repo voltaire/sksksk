@@ -1,7 +1,5 @@
-FROM anapsix/alpine-java
+FROM openjdk:8-alpine
 EXPOSE 25565
-
-RUN apk add --update-cache git
 
 ADD start /srv/mc/run
 RUN chmod +x /srv/mc/run
