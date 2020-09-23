@@ -1,6 +1,7 @@
 import ec2 = require('@aws-cdk/aws-ec2');
 import ecs = require('@aws-cdk/aws-ecs');
 import events = require('@aws-cdk/aws-events');
+import eventstargets = require('@aws-cdk/aws-events-targets');
 import iam = require('@aws-cdk/aws-iam');
 import sns = require('@aws-cdk/aws-sns');
 import path = require('path');
@@ -12,6 +13,11 @@ export class SkskskStack extends cdk.Stack {
     super(scope, id, props)
 
     const vpc = new ec2.Vpc(this, 'SkskskVpc', { maxAzs: 3 })
+
+    const sg = new ec2.SecurityGroup(this, 'SkskskTaskSecurityGroup', {
+      vpc: vpc,
+      allowAllOutbound: true,
+    })
 
     new ec2.InterfaceVpcEndpoint(this, 'CloudwatchLogsVpcEndpoint', {
       vpc: vpc,
@@ -37,26 +43,6 @@ export class SkskskStack extends cdk.Stack {
       streamPrefix: "sksksk",
     })
 
-    const sepAccount = new iam.AccountPrincipal('006851364659')
-
-    events.EventBus.grantPutEvents(sepAccount)
-
-    const backupCreatedEventBridge = new events.EventBus(this, "SkskskBackupEvent")
-
-    const backupCreatedRule = new events.Rule(this, "SkskskBackupEventRule", {
-      eventBus: backupCreatedEventBridge,
-      enabled: true,
-      eventPattern: {
-        account: ["006851364659"],
-        source: ["aws.s3"],
-        detail:{
-          "eventName": ["PutObject"],
-          "requestParameters": {
-            "bucketName": ["mc.sep.gg-backups"],
-          }
-        }
-      },
-    })
     const cluster = new ecs.Cluster(this, 'SkskskCluster', { vpc });
 
     const taskDef = new ecs.FargateTaskDefinition(this, "SkskskTaskDefinition", {
@@ -75,6 +61,35 @@ export class SkskskStack extends cdk.Stack {
       taskDefinition: taskDef
     });
     */
+
+    const sepAccount = new iam.AccountPrincipal('006851364659')
+
+    events.EventBus.grantPutEvents(sepAccount)
+
+    const backupCreatedEventBridge = new events.EventBus(this, "SkskskBackupEvent")
+
+    const taskTarget = new eventstargets.EcsTask({
+      cluster: cluster,
+      taskDefinition: taskDef,
+      securityGroup: sg,
+      taskCount: 1,
+    })
+
+    const backupCreatedRule = new events.Rule(this, "SkskskBackupEventRule", {
+      eventBus: backupCreatedEventBridge,
+      enabled: true,
+      targets: [taskTarget],
+      eventPattern: {
+        account: ["006851364659"],
+        source: ["aws.s3"],
+        detail:{
+          "eventName": ["PutObject"],
+          "requestParameters": {
+            "bucketName": ["mc.sep.gg-backups"],
+          }
+        }
+      },
+    })
 
     const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
   }
