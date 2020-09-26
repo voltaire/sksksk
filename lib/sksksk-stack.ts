@@ -93,6 +93,12 @@ export class SkskskStack extends cdk.Stack {
       websiteIndexDocument: 'index.html',
     })
 
+    mapBucket.grantReadWrite(taskDef.taskRole)
+
+    const backupBucket = s3.Bucket.fromBucketName(this, "BackupBucket", "mc.sep.gg-backups")
+
+    backupBucket.grantRead(taskDef.taskRole)
+
     const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
   }
 }
