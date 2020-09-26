@@ -3,6 +3,7 @@ import ecs = require('@aws-cdk/aws-ecs');
 import events = require('@aws-cdk/aws-events');
 import eventstargets = require('@aws-cdk/aws-events-targets');
 import iam = require('@aws-cdk/aws-iam');
+import s3 = require('@aws-cdk/aws-s3');
 import sns = require('@aws-cdk/aws-sns');
 import path = require('path');
 import * as cdk from '@aws-cdk/core';
@@ -85,6 +86,11 @@ export class SkskskStack extends cdk.Stack {
           }
         }
       },
+    })
+
+    const mapBucket = new s3.Bucket(this, "SkskskWorldMaps", {
+      publicReadAccess: true,
+      websiteIndexDocument: 'index.html',
     })
 
     const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
