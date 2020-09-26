@@ -54,8 +54,8 @@ export class SkskskStack extends cdk.Stack {
       cpu: 4096,
     })
 
-    taskDef.addContainer("Spigot", {
-      image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, 'spigot_image')),
+    taskDef.addContainer("Overviewer", {
+      image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, 'overviewer')),
       logging,
     })
 
