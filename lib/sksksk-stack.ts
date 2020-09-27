@@ -1,6 +1,5 @@
 import ec2 = require('@aws-cdk/aws-ec2');
 import ecs = require('@aws-cdk/aws-ecs');
-import efs = require('@aws-cdk/aws-efs');
 import events = require('@aws-cdk/aws-events');
 import eventstargets = require('@aws-cdk/aws-events-targets');
 import iam = require('@aws-cdk/aws-iam');
@@ -21,9 +20,6 @@ export class SkskskStack extends cdk.Stack {
       allowAllOutbound: true,
     })
 
-    // nfs ingress required for efs
-    sg.addIngressRule(sg, ec2.Port.tcp(2049))
-
     new ec2.InterfaceVpcEndpoint(this, 'CloudwatchLogsVpcEndpoint', {
       vpc: vpc,
       service: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,
@@ -42,22 +38,9 @@ export class SkskskStack extends cdk.Stack {
       securityGroups: [sg],
     })
 
-    new ec2.InterfaceVpcEndpoint(this, 'EFSVpcEndpoint', {
-      vpc: vpc,
-      service: ec2.InterfaceVpcEndpointAwsService.ELASTIC_FILESYSTEM,
-      securityGroups: [sg],
-    })
-
     new ec2.GatewayVpcEndpoint(this, 'S3VpcEndpoint', {
       vpc: vpc,
       service: ec2.GatewayVpcEndpointAwsService.S3,
-    })
-
-    const skskskFileSystem = new efs.FileSystem(this, "skskskFileSystem", {
-      vpc: vpc,
-      provisionedThroughputPerSecond: Size.mebibytes(100),
-      throughputMode: efs.ThroughputMode.PROVISIONED,
-      securityGroup: sg,
     })
 
     const logging = new ecs.AwsLogDriver({
@@ -69,23 +52,11 @@ export class SkskskStack extends cdk.Stack {
     const taskDef = new ecs.FargateTaskDefinition(this, "SkskskTaskDefinition", {
       memoryLimitMiB: 8192,
       cpu: 4096,
-      volumes: [{
-        name: "output",
-        efsVolumeConfiguration: {
-          fileSystemId: skskskFileSystem.fileSystemId,
-        },
-      }],
     })
 
     const container = taskDef.addContainer("Overviewer", {
       image: ecs.ContainerImage.fromAsset(path.resolve(__dirname, 'overviewer')),
       logging,
-    })
-
-    container.addMountPoints({
-      sourceVolume: "output",
-      containerPath: "/output",
-      readOnly: false,
     })
 
     const sepAccount = new iam.AccountPrincipal('006851364659')
