@@ -21,6 +21,9 @@ export class SkskskStack extends cdk.Stack {
       allowAllOutbound: true,
     })
 
+    // nfs ingress required for efs
+    sg.addIngressRule(sg, ec2.Port.tcp(2049))
+
     new ec2.InterfaceVpcEndpoint(this, 'CloudwatchLogsVpcEndpoint', {
       vpc: vpc,
       service: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,
@@ -70,7 +73,6 @@ export class SkskskStack extends cdk.Stack {
         name: "output",
         efsVolumeConfiguration: {
           fileSystemId: skskskFileSystem.fileSystemId,
-          rootDirectory: "/sksksk",
         },
       }],
     })
