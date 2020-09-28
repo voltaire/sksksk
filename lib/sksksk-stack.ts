@@ -1,4 +1,6 @@
 import ec2 = require('@aws-cdk/aws-ec2');
+import ecr = require('@aws-cdk/aws-ecr');
+import ecrasset = require('@aws-cdk/aws-ecr-assets');
 import ecs = require('@aws-cdk/aws-ecs');
 import events = require('@aws-cdk/aws-events');
 import eventstargets = require('@aws-cdk/aws-events-targets');
@@ -101,5 +103,14 @@ export class SkskskStack extends cdk.Stack {
     backupBucket.grantRead(taskDef.taskRole)
 
     const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
+
+    const overviewerImage = new ecrasset.DockerImageAsset(this, 'overviewerImage', {
+      directory: path.resolve(__dirname, 'overviewer'),
+      repositoryName: 'overviewer',
+    })
+
+    const deployGroup = new iam.Group(this, 'sksksk-deploy', {})
+
+    overviewerImage.repository.grantPull(deployGroup)
   }
 }

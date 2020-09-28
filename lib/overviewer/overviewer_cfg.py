@@ -36,4 +36,7 @@ renders = {
 }
 
 outputdir = "/output/"
-processes = multiprocessing.cpu_count()
+try:
+    processes = int(os.getenv("THREADS"))
+except TypeError:
+    processes = multiprocessing.cpu_count()
