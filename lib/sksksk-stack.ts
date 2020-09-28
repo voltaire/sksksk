@@ -1,5 +1,4 @@
 import ec2 = require('@aws-cdk/aws-ec2');
-import ecr = require('@aws-cdk/aws-ecr');
 import ecrasset = require('@aws-cdk/aws-ecr-assets');
 import ecs = require('@aws-cdk/aws-ecs');
 import events = require('@aws-cdk/aws-events');
@@ -9,7 +8,6 @@ import s3 = require('@aws-cdk/aws-s3');
 import sns = require('@aws-cdk/aws-sns');
 import path = require('path');
 import * as cdk from '@aws-cdk/core';
-import { Size } from '@aws-cdk/core';
 
 export class SkskskStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
