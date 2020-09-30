@@ -23,6 +23,7 @@
   "dependencies": {
     "@aws-cdk/core": "1.64.1",
     "@aws-cdk/aws-ecr-assets": "1.64.1",
+    "@aws-cdk/aws-ecs": "1.64.1",
     "@aws-cdk/aws-iam": "1.64.1",
     "@aws-cdk/aws-s3": "1.64.1",
     "@aws-cdk/aws-sns": "1.64.1",
