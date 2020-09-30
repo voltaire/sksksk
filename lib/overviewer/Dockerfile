@@ -10,7 +10,7 @@ RUN yum install -y Minecraft-Overviewer
 ADD https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip /root/awscli.zip
 RUN unzip /root/awscli.zip && ./aws/install
 
-ADD https://overviewer.org/textures/1.16.3 /root/.minecraft/versions/1.16.3/1.16.3.jar
+ADD https://launcher.mojang.com/v1/objects/1321521b2caf934f7fc9665aab7e059a7b2bfcdf/client.jar /root/.minecraft/versions/1.16.3/1.16.3.jar
 
 ADD wrapper.sh /wrapper
 RUN chmod +x /wrapper
