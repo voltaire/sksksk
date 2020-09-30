@@ -31,7 +31,7 @@ renders = {
     "the_end": {
         "world": "the_end",
         "title": "The End",
-        "rendermode": "lighting",
+        "rendermode": "end_smooth_lighting",
     },
 }
 
