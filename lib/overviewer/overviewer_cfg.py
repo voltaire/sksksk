@@ -1,5 +1,8 @@
+from .optimizeimages import optipng
 import multiprocessing
 import os
+
+optimizeimg = [optipng()]
 
 worlds = {
     "overworld": os.getenv('SKSKSK_OVERWORLD_DIR', 'pumpcraft'),
@@ -7,16 +10,24 @@ worlds = {
     "the_end": os.getenv('SKSKSK_THE_END_DIR', 'pumpcraft_the_end'),
 }
 
+end_smooth_lighting = [Base(), EdgeLines(), SmoothLighting(strength=0.5)]
+
 renders = {
     "overworld_day": {
         "world": "overworld",
         "title": "Daytime",
         "rendermode": "smooth_lighting",
+        "zoom": {
+            "defaultzoom": 8,
+        },
     },
     "overworld_night": {
         "world": "overworld",
         "title": "Nighttime",
         "rendermode": "smooth_night",
+        "zoom": {
+            "defaultzoom": 8,
+        },
     },
     "overworld": {
         "world": "overworld",
@@ -32,6 +43,11 @@ renders = {
         "world": "the_end",
         "title": "The End",
         "rendermode": "end_smooth_lighting",
+    },
+    renders['biomes'] = {
+        'title': 'Biomes',
+        'rendermode': [ClearBase(), BiomeOverlay()],
+        'overlay': ['day']
     },
 }
 
