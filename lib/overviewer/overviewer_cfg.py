@@ -17,22 +17,19 @@ renders = {
         "world": "overworld",
         "title": "Daytime",
         "rendermode": "smooth_lighting",
-        "zoom": {
-            "defaultzoom": 8,
-        },
+        "defaultzoom": 8,
     },
     "overworld_night": {
         "world": "overworld",
         "title": "Nighttime",
         "rendermode": "smooth_night",
-        "zoom": {
-            "defaultzoom": 8,
-        },
+        "defaultzoom": 8,
     },
-    "overworld": {
+    "overworld_cave": {
         "world": "overworld",
         "title": "Caves",
         "rendermode": "cave",
+        "defaultzoom": 8,
     },
     "nether": {
         "world": "nether",
@@ -42,12 +39,13 @@ renders = {
     "the_end": {
         "world": "the_end",
         "title": "The End",
-        "rendermode": "end_smooth_lighting",
+        "rendermode": end_smooth_lighting,
     },
-    renders['biomes'] = {
-        'title': 'Biomes',
-        'rendermode': [ClearBase(), BiomeOverlay()],
-        'overlay': ['day']
+    "biomes": {
+        "world": "overworld",
+        "title": "Biomes",
+        "rendermode": [ClearBase(), BiomeOverlay()],
+        "overlay": ["overworld_day"]
     },
 }
 
