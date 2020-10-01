@@ -7,7 +7,7 @@ worlds = {
     "the_end": os.getenv('SKSKSK_THE_END_DIR', 'pumpcraft_the_end'),
 }
 
-end_smooth_lighting = [Base(), EdgeLines(), SmoothLighting(strength=0.5)]
+end_smooth_lighting = [Base(), EdgeLines(), SmoothLighting(strength=0.5)] # pylint: disable=undefined-variable
 
 renders = {
     "overworld_day": {
@@ -41,7 +41,7 @@ renders = {
     "biomes": {
         "world": "overworld",
         "title": "Biomes",
-        "rendermode": [ClearBase(), BiomeOverlay()],
+        "rendermode": [ClearBase(), BiomeOverlay()], # pylint: disable=undefined-variable
         "overlay": ["overworld_day"]
     },
 }
