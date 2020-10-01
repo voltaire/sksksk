@@ -1,8 +1,5 @@
-from .optimizeimages import optipng
 import multiprocessing
 import os
-
-optimizeimg = [optipng()]
 
 worlds = {
     "overworld": os.getenv('SKSKSK_OVERWORLD_DIR', 'pumpcraft'),
