@@ -7,8 +7,6 @@ worlds = {
     "the_end": os.getenv('SKSKSK_THE_END_DIR', 'pumpcraft_the_end'),
 }
 
-end_smooth_lighting = [Base(), EdgeLines(), SmoothLighting(strength=0.5)] # pylint: disable=undefined-variable
-
 renders = {
     "overworld_day": {
         "world": "overworld",
@@ -32,11 +30,6 @@ renders = {
         "world": "nether",
         "title": "Nether",
         "rendermode": "nether_smooth_lighting",
-    },
-    "the_end": {
-        "world": "the_end",
-        "title": "The End",
-        "rendermode": end_smooth_lighting,
     },
     "biomes": {
         "world": "overworld",
