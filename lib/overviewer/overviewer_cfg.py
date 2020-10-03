@@ -26,11 +26,6 @@ renders = {
         "rendermode": "cave",
         "defaultzoom": 8,
     },
-    "nether": {
-        "world": "nether",
-        "title": "Nether",
-        "rendermode": "nether_smooth_lighting",
-    },
     "biomes": {
         "world": "overworld",
         "title": "Biomes",
