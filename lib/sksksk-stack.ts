@@ -65,7 +65,7 @@ export class SkskskStack extends cdk.Stack {
     })
     new route53.ARecord(this, 'lobby', {
       zone: tonkatsuZone,
-      recordName: '_lobby.mc',
+      recordName: 'lobby.mc',
       target: route53.RecordTarget.fromIpAddresses('192.168.223.121'),
     })
   }
