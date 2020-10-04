@@ -5,6 +5,7 @@ import iam = require('@aws-cdk/aws-iam');
 import route53 = require('@aws-cdk/aws-route53');
 import s3 = require('@aws-cdk/aws-s3');
 import sns = require('@aws-cdk/aws-sns');
+import subscriptions = require('@aws-cdk/aws-sns-subscriptions');
 import path = require('path');
 import * as cdk from '@aws-cdk/core';
 
@@ -13,9 +14,6 @@ export class SkskskStack extends cdk.Stack {
     super(scope, id, props)
 
     const sepAccount = new iam.AccountPrincipal('006851364659')
-
-    const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
-    backupNotificationTopic.grantPublish(sepAccount)
 
     const deployGroup = new iam.Group(this, 'sksksk-deploy', {})
 
@@ -43,6 +41,20 @@ export class SkskskStack extends cdk.Stack {
 
     const sepBucket = s3.Bucket.fromBucketName(this, 'sepBucket', 'mc.sep.gg-backups')
     sepBucket.grantRead(deployGroup)
+
+    const backupNotificationTopic = new sns.Topic(this, "SkskskBackupTopic", {});
+    backupNotificationTopic.grantPublish(sepAccount)
+    backupNotificationTopic.addToResourcePolicy(new iam.PolicyStatement({
+      actions: ["sns:Publish"],
+      resources: [backupNotificationTopic.topicArn],
+      principals: [new iam.ServicePrincipal("s3.amazonaws.com")],
+      conditions: {
+        ArnEquals: {"aws:SourceArn": sepBucket.bucketArn}
+      },
+    }))
+    backupNotificationTopic.addSubscription(new subscriptions.UrlSubscription('https://hookb.in/mZX8XDm3onueqq710rWM', {
+      protocol: sns.SubscriptionProtocol.HTTPS,
+    }))
 
     const tonkatsuZone = route53.HostedZone.fromHostedZoneAttributes(this, 'tonkatsuZone', {
       hostedZoneId: 'ZVAMW53PNR70P',
