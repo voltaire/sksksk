@@ -53,5 +53,20 @@ export class SkskskStack extends cdk.Stack {
       recordName: 'map',
       target: route53.RecordTarget.fromAlias(new aliastarget.BucketWebsiteTarget(mapBucket))
     })
+    const bungeeCordRecord = new route53.ARecord(this, 'bungeeCord', {
+      zone: tonkatsuZone,
+      recordName: 'mc',
+      target: route53.RecordTarget.fromIpAddresses('173.255.249.198'),
+    })
+    new route53.CnameRecord(this, 'pumpcraft', {
+      zone: tonkatsuZone,
+      recordName: 'pumpcraft.mc',
+      domainName: bungeeCordRecord.domainName,
+    })
+    new route53.ARecord(this, 'lobby', {
+      zone: tonkatsuZone,
+      recordName: '_lobby.mc',
+      target: route53.RecordTarget.fromIpAddresses('192.168.223.121'),
+    })
   }
 }
