@@ -1,12 +1,9 @@
 import aliastarget = require('@aws-cdk/aws-route53-targets');
-import ecrasset = require('@aws-cdk/aws-ecr-assets');
-import ecs = require('@aws-cdk/aws-ecs');
 import iam = require('@aws-cdk/aws-iam');
 import route53 = require('@aws-cdk/aws-route53');
 import s3 = require('@aws-cdk/aws-s3');
 import sns = require('@aws-cdk/aws-sns');
 import subscriptions = require('@aws-cdk/aws-sns-subscriptions');
-import path = require('path');
 import * as cdk from '@aws-cdk/core';
 
 export class SkskskStack extends cdk.Stack {
@@ -19,21 +16,6 @@ export class SkskskStack extends cdk.Stack {
 
     const deployUser = new iam.User(this, 'deployUser', {
       groups: [deployGroup],
-    })
-
-    const overviewerImage = new ecrasset.DockerImageAsset(this, 'overviewerImage', {
-      directory: path.resolve(__dirname, 'overviewer'),
-      repositoryName: 'overviewer',
-    })
-    overviewerImage.repository.grantPull(deployGroup)
-
-    const taskDefinition = new ecs.FargateTaskDefinition(this, "TaskDef", {
-      memoryLimitMiB: 1024,
-      cpu: 512,
-    })
-
-    taskDefinition.addContainer("dummy", {
-      image: ecs.ContainerImage.fromEcrRepository(overviewerImage.repository, overviewerImage.imageUri.split(':').pop())
     })
 
     const mapBucket = s3.Bucket.fromBucketName(this, 'mapBucket', 'map.tonkat.su')
