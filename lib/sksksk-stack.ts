@@ -35,7 +35,7 @@ export class SkskskStack extends cdk.Stack {
       },
     }))
     deployGroup.addToPolicy(new iam.PolicyStatement({
-      actions: ["sns:Subscribe"],
+      actions: ["sns:Subscribe", "sns:ConfirmSubscription"],
       resources: [backupNotificationTopic.topicArn],
     }))
 
