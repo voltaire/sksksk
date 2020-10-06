@@ -34,8 +34,9 @@ export class SkskskStack extends cdk.Stack {
         ArnEquals: {"aws:SourceArn": sepBucket.bucketArn}
       },
     }))
-    backupNotificationTopic.addSubscription(new subscriptions.UrlSubscription('https://hookb.in/mZX8XDm3onueqq710rWM', {
-      protocol: sns.SubscriptionProtocol.HTTPS,
+    deployGroup.addToPolicy(new iam.PolicyStatement({
+      actions: ["sns:Subscribe"],
+      resources: [backupNotificationTopic.topicArn],
     }))
 
     const tonkatsuZone = route53.HostedZone.fromHostedZoneAttributes(this, 'tonkatsuZone', {
