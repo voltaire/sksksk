@@ -75,5 +75,11 @@ export class SkskskStack extends cdk.Stack {
       recordName: 'create.mc.pvt',
       target: route53.RecordTarget.fromIpAddresses('192.168.214.189'),
     })
+
+    new route53.ARecord(this, 'renderer', {
+      zone: tonkatsuZone,
+      recordName: 'renderer',
+      target: route53.RecordTarget.fromIpAddresses('162.253.155.33'),
+    })
   }
 }
