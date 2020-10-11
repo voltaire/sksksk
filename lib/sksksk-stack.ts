@@ -29,20 +29,14 @@ export class SkskskStack extends cdk.Stack {
       zoneName: 'tonkat.su',
     })
 
-    const mapCert = new acm.Certificate(this, 'mapCert', {
-      domainName: "map.tonkat.su",
-      validation: acm.CertificateValidation.fromDns(tonkatsuZone),
-    })
-
-    /*
-    new cloudfront.Distribution(this, 'mapDistribution', {
+    const mapCdn = new cloudfront.Distribution(this, 'mapDistribution', {
       defaultBehavior: { origin: new origins.S3Origin(mapBucket) },
       domainNames: ["map.tonkat.su"],
-      certificate: mapCert,
+      certificate: acm.Certificate.fromCertificateArn(this, 'usEastMapCert', 'arn:aws:acm:us-east-1:635281304921:certificate/cf383c8b-755d-471b-b07d-0300e0c9c499'),
+      defaultRootObject: "index.html",
       enableIpv6: true,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
     })
-    */
 
     const sepBucket = s3.Bucket.fromBucketName(this, 'sepBucket', 'mc.sep.gg-backups')
     sepBucket.grantRead(deployGroup)
@@ -62,13 +56,18 @@ export class SkskskStack extends cdk.Stack {
       resources: [backupNotificationTopic.topicArn],
     }))
 
-    /*
-    new route53.ARecord(this, 'mapRecord', {
+    new route53.ARecord(this, 'mapARecord', {
       zone: tonkatsuZone,
       recordName: 'map',
-      target: route53.RecordTarget.fromAlias(new aliastarget.BucketWebsiteTarget(mapBucket))
+      target: route53.RecordTarget.fromAlias(new aliastarget.CloudFrontTarget(mapCdn))
     })
-    */
+
+    new route53.AaaaRecord(this, 'mapAAAARecord', {
+      zone: tonkatsuZone,
+      recordName: 'map',
+      target: route53.RecordTarget.fromAlias(new aliastarget.CloudFrontTarget(mapCdn))
+    })
+
     const bungeeCordRecord = new route53.ARecord(this, 'bungeeCord', {
       zone: tonkatsuZone,
       recordName: 'mc',
