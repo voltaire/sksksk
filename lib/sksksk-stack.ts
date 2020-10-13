@@ -17,6 +17,15 @@ export class SkskskStack extends cdk.Stack {
 
     const deployGroup = new iam.Group(this, 'sksksk-deploy', {})
 
+    deployGroup.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+      ],
+      resources: ["*"],
+    }))
+
     const deployUser = new iam.User(this, 'deployUser', {
       groups: [deployGroup],
     })
