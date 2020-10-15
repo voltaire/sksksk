@@ -112,5 +112,29 @@ export class SkskskStack extends cdk.Stack {
     })
 
     backupNotificationTopic.addSubscription(new subscriptions.UrlSubscription('https://'+rendererRecord.domainName+'/callback', {protocol: sns.SubscriptionProtocol.HTTPS}))
+
+    const legoGroup = new iam.Group(this, "legoGroup", {})
+
+    legoGroup.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        "route53:ChangeResourceRecordSets",
+        "route53:ListResourceRecordSets",
+      ],
+      resources: [tonkatsuZone.hostedZoneArn],
+    }))
+
+    legoGroup.addToPolicy(new iam.PolicyStatement({
+      actions: ["route53:GetChange"],
+      resources: ["arn:aws:route53:::change/*"],
+    }))
+
+    legoGroup.addToPolicy(new iam.PolicyStatement({
+      actions: ["route53:ListHostedZonesByName"],
+      resources: ["*"],
+    }))
+
+    const legoUser = new iam.User(this, "legoUser", {
+      groups: [legoGroup],
+    })
   }
 }
