@@ -65,16 +65,10 @@ export class SkskskStack extends cdk.Stack {
       resources: [backupNotificationTopic.topicArn],
     }))
 
-    new route53.ARecord(this, 'mapARecord', {
+    new route53.CnameRecord(this, 'mapCname', {
       zone: tonkatsuZone,
       recordName: 'map',
-      target: route53.RecordTarget.fromAlias(new aliastarget.CloudFrontTarget(mapCdn))
-    })
-
-    new route53.AaaaRecord(this, 'mapAAAARecord', {
-      zone: tonkatsuZone,
-      recordName: 'map',
-      target: route53.RecordTarget.fromAlias(new aliastarget.CloudFrontTarget(mapCdn))
+      domainName: 'map-tonkat-su.website-us-east-1.linodeobjects.com',
     })
 
     const bungeeCordRecord = new route53.ARecord(this, 'bungeeCord', {
