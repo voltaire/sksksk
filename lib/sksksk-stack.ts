@@ -1,8 +1,4 @@
-import aliastarget = require('@aws-cdk/aws-route53-targets');
 import iam = require('@aws-cdk/aws-iam');
-import acm = require('@aws-cdk/aws-certificatemanager');
-import cloudfront = require('@aws-cdk/aws-cloudfront');
-import origins = require('@aws-cdk/aws-cloudfront-origins');
 import route53 = require('@aws-cdk/aws-route53');
 import s3 = require('@aws-cdk/aws-s3');
 import sns = require('@aws-cdk/aws-sns');
@@ -30,21 +26,9 @@ export class SkskskStack extends cdk.Stack {
       groups: [deployGroup],
     })
 
-    const mapBucket = s3.Bucket.fromBucketName(this, 'mapBucket', 'map.tonkat.su')
-    mapBucket.grantReadWrite(deployGroup)
-
     const tonkatsuZone = route53.HostedZone.fromHostedZoneAttributes(this, 'tonkatsuZone', {
       hostedZoneId: 'ZVAMW53PNR70P',
       zoneName: 'tonkat.su',
-    })
-
-    const mapCdn = new cloudfront.Distribution(this, 'mapDistribution', {
-      defaultBehavior: { origin: new origins.S3Origin(mapBucket) },
-      domainNames: ["map.tonkat.su"],
-      certificate: acm.Certificate.fromCertificateArn(this, 'usEastMapCert', 'arn:aws:acm:us-east-1:635281304921:certificate/cf383c8b-755d-471b-b07d-0300e0c9c499'),
-      defaultRootObject: "index.html",
-      enableIpv6: true,
-      priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
     })
 
     const sepBucket = s3.Bucket.fromBucketName(this, 'sepBucket', 'mc.sep.gg-backups')
