@@ -127,6 +127,19 @@ export class SkskskStack extends cdk.Stack {
       resources: ["*"],
     }))
 
+    legoGroup.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        "secretsmanager:GetSecretValue",
+        "secretsManager:CreateSecret",
+      ],
+      resources: ["*"],
+      conditions: {
+        "ForAnyValue:StringEquals": {
+          "secretsmanager:ResourceTag/service": "map-cert",
+        },
+      },
+    }))
+
     const legoUser = new iam.User(this, "legoUser", {
       groups: [legoGroup],
     })
