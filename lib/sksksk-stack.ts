@@ -134,7 +134,7 @@ export class SkskskStack extends cdk.Stack {
       ],
       resources: ["*"],
       conditions: {
-        "ForAnyValue:StringEquals": {
+        "StringEquals": {
           "secretsmanager:ResourceTag/service": "map-cert",
         },
       },
