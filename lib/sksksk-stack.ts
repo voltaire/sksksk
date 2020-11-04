@@ -61,20 +61,10 @@ export class SkskskStack extends cdk.Stack {
       domainName: 'oldmap.tonkat.su.website-us-east-1.linodeobjects.com',
     })
 
-    const bungeeCordRecord = new route53.ARecord(this, 'bungeeCord', {
+    new route53.CnameRecord(this, 'bungeeCord', {
       zone: tonkatsuZone,
       recordName: 'mc',
-      target: route53.RecordTarget.fromIpAddresses('173.255.249.198'),
-    })
-    new route53.CnameRecord(this, 'pumpcraft', {
-      zone: tonkatsuZone,
-      recordName: 'pumpcraft.mc',
-      domainName: bungeeCordRecord.domainName,
-    })
-    new route53.ARecord(this, 'lobby', {
-      zone: tonkatsuZone,
-      recordName: 'lobby.mc',
-      target: route53.RecordTarget.fromIpAddresses('192.168.223.121'),
+      domainName: 'mc.sep.gg',
     })
 
     const rendererRecord = new route53.ARecord(this, 'renderer', {
