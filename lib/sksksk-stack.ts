@@ -18,6 +18,7 @@ export class SkskskStack extends cdk.Stack {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
+        "cloudwatch:PutMetricData",
       ],
       resources: ["*"],
     }))
