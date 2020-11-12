@@ -1,0 +1,18 @@
+on:
+  pull_request:
+    branches:
+name: diff
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cdk diff
+        uses: youyo/aws-cdk-github-actions@v1
+        with:
+          cdk_subcommand: 'diff'
+          cdk_version: '1.73.0'
+        env:
+          AWS_DEFAULT_REGION: 'us-west-2'
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEPLOY_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEPLOY_AWS_SECRET_ACCESS_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
