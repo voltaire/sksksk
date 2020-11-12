@@ -6,6 +6,8 @@ jobs:
   diff:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout code
+        uses: actions/checkout@v2
       - name: cdk diff
         uses: youyo/aws-cdk-github-actions@v1
         with:
