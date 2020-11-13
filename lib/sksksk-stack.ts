@@ -76,23 +76,6 @@ export class SkskskStack extends cdk.Stack {
       target: route53.RecordTarget.fromIpAddresses('162.253.155.33'),
     })
 
-    const escapeRecord = new route53.ARecord(this, 'escapeA', {
-      zone: tonkatsuZone,
-      recordName: 'escape.mc',
-      target: route53.RecordTarget.fromIpAddresses('162.253.155.33'),
-    })
-
-    new route53.SrvRecord(this, 'escapeSrv', {
-      zone: tonkatsuZone,
-      recordName: '_minecraft._tcp.escape.mc',
-      values: [{
-        hostName: escapeRecord.domainName,
-        port: 25567,
-        priority: 1,
-        weight: 0,
-      }],
-    })
-
     backupNotificationTopic.addSubscription(new subscriptions.UrlSubscription('https://'+rendererRecord.domainName+'/callback', {protocol: sns.SubscriptionProtocol.HTTPS}))
 
     const legoGroup = new iam.Group(this, "legoGroup", {})
