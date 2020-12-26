@@ -73,7 +73,7 @@ export class SkskskStack extends cdk.Stack {
     const rendererRecord = new route53.ARecord(this, 'renderer', {
       zone: tonkatsuZone,
       recordName: 'renderer',
-      target: route53.RecordTarget.fromIpAddresses('162.253.155.33'),
+      target: route53.RecordTarget.fromIpAddresses('107.150.36.10'),
     })
 
     backupNotificationTopic.addSubscription(new subscriptions.UrlSubscription('https://'+rendererRecord.domainName+'/callback', {protocol: sns.SubscriptionProtocol.HTTPS}))
